@@ -1,12 +1,18 @@
-export default function Button(props) {
-  const buttonClass = classnames("button", {
-    "button--confirm": props.confirm,
-    "button--danger": props.danger
-  });
- 
-  return (
-<ul></ul>
-  );
-}
+import DayListItem from "components/DayListItem";
+import React from "react";
+import classnames from "classnames";
 
-<ul></ul>
+export default function DayList(props) {
+
+ const listOfDays = props.days.map((day) => 
+  <li> <DayListItem 
+  name={day.name}
+  spots={day.spots}
+  selected={day.name === props.day}
+  setDay={props.setDay}/> </li>
+ );
+
+  return (
+<ul>{listOfDays}</ul>
+  );
+};
