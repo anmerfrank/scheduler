@@ -1,28 +1,40 @@
 
 
 function getAppointmentsForDay(state, day) {
-  const appointments=[];
+  const appointments = [];
   const filteredDays = state.days.find(dayCheck => dayCheck.name === day)
-  if(!filteredDays) return appointments;
+  if (!filteredDays) return appointments;
   for (let id of filteredDays.appointments) {
-    appointments.push(state.appointments[id-1])
+    appointments.push(state.appointments[id - 1])
   }
-    return appointments;
+  return appointments;
 }
 
-// NEED A MENTOR TO HELP WITH DATA re ID -1
+// NEED A MENTOR TO HELP WITH DATA re ID -1 - will throw the rest of data off
 
-function getInterviewersForDay(state, interviewer) {
+function getInterviewersForDay(state, dayName) { // from day I need appointments - from appointments, interview - from interview, interviewers
+  let interviews = [];
   let interviewers = [];
-  for (let selectedInterviewer of state.interviewers) {
-    if (selectedInterviewer.name === interviewer) {
-      for (let id of selectedInterviewer.appointments) {
-        interviewers.push(state.interviewer[id])
-      }
+  let appointments = [];
+  for (let myDay of state.days) {
+    if (myDay.name === dayName) {
+      appointments=(myDay.appointments)
     }
+  }
+  for (let apptNumber of appointments) {
+    // first appointment = state.appointments[1]
+    // interview = first appointment.interview
+    if (state.appointments[apptNumber].interview !== null) {
+      interviews.push(state.appointments[apptNumber].interview)
+    }
+  }
+  for (let interviewObj of interviews) {
+    let interviewerId = interviewObj.interviewer;
+    interviewers.push(state.interviewers[interviewerId]);
   }
   return interviewers;
 }
+
 
 function getInterview(state, interview) {
   if (!interview) {
@@ -34,5 +46,9 @@ function getInterview(state, interview) {
     return interviewObject;
   }
 }
+
+
+
+
 
 export { getAppointmentsForDay, getInterviewersForDay, getInterview };

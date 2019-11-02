@@ -1,15 +1,16 @@
 import "./styles.scss";
 import React, { useState } from "react";
-import DayListItem from "components/DayListItem";
-import classnames from "classnames";
-import InterviewerList from "components/InterviewerList";
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import useVisualMode from "hooks/useVisualMode";
 import Form from "components/Appointment/Form";
+import { getInterview } from "helpers/selectors";
 
 export default function Appointment(props) {
+
+
+// NOT SURE IF THIS IS CORRECT ^ 
 
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
@@ -20,6 +21,17 @@ export default function Appointment(props) {
   // const interviewers=[];
 
 
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    props.bookInterview(props.key, interview)
+    // transition(SHOW);
+  }
+
+
+
   return (
     <article className="appointment">
       <Header
@@ -28,17 +40,21 @@ export default function Appointment(props) {
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
 
       {mode === SHOW && (
+       
         <Show
+          
           student={props.interview.student}
-          interviewer={props.interview.interviewer}
+          interviewers={props.interviewers}
+          interviewer={getInterview(props, props.interview).interviewer}
           onEdit={props.onEdit}
           onDelete={props.onDelete} />
       )}
+
   {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
-          onCancel={props.onCancel}
-          onSave={props.onSave} />
+          onCancel={back}
+          onSave={save} />
       )}
 
 
