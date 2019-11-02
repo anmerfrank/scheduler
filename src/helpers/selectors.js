@@ -18,7 +18,7 @@ function getInterviewersForDay(state, dayName) { // from day I need appointments
   let appointments = [];
   for (let myDay of state.days) {
     if (myDay.name === dayName) {
-      appointments=(myDay.appointments)
+      appointments = (myDay.appointments)
     }
   }
   for (let apptNumber of appointments) {
@@ -30,7 +30,10 @@ function getInterviewersForDay(state, dayName) { // from day I need appointments
   }
   for (let interviewObj of interviews) {
     let interviewerId = interviewObj.interviewer;
-    interviewers.push(state.interviewers[interviewerId]);
+    let interviewer = state.interviewers[interviewerId];
+    if (!interviewers.includes(interviewer)) {
+      interviewers.push(interviewer);
+    }
   }
   return interviewers;
 }
