@@ -5,37 +5,15 @@ function getAppointmentsForDay(state, day) {
   const filteredDays = state.days.find(dayCheck => dayCheck.name === day)
   if (!filteredDays) return appointments;
   for (let id of filteredDays.appointments) {
-    appointments.push(state.appointments[id - 1])
+    appointments.push(state.appointments[id])
   }
   return appointments;
 }
 
-// NEED A MENTOR TO HELP WITH DATA re ID -1 - will throw the rest of data off
-
-function getInterviewersForDay(state, dayName) { // from day I need appointments - from appointments, interview - from interview, interviewers
-  let interviews = [];
-  let interviewers = [];
-  let appointments = [];
-  for (let myDay of state.days) {
-    if (myDay.name === dayName) {
-      appointments = (myDay.appointments)
-    }
-  }
-  for (let apptNumber of appointments) {
-    // first appointment = state.appointments[1]
-    // interview = first appointment.interview
-    if (state.appointments[apptNumber].interview !== null) {
-      interviews.push(state.appointments[apptNumber].interview)
-    }
-  }
-  for (let interviewObj of interviews) {
-    let interviewerId = interviewObj.interviewer;
-    let interviewer = state.interviewers[interviewerId];
-    if (!interviewers.includes(interviewer)) {
-      interviewers.push(interviewer);
-    }
-  }
-  return interviewers;
+function getInterviewersForDay(state, dayName) { 
+  const day = state.days.find(day => day.name === dayName);
+  if (!day) return [];
+  return day.interviewers.map(id => state.interviewers[id]);
 }
 
 
@@ -44,14 +22,23 @@ function getInterview(state, interview) {
     return null;
   } else {
     const student = interview.student;
-    const interviewer = state.interviewers[interview.interviewer];
-    const interviewObject = { student, interviewer };
-    return interviewObject;
+    console.log('student', student)
+    if (typeof(interview.interviewer) === "number") {
+      // FML ugly hack here... only try and expand this if it was passed in as a number, not an object
+      const interviewer = state.interviewers[interview.interviewer];
+
+      return { student, interviewer };
+    } else {
+      return { ...interview}
+    }
   }
 }
 
 
 
+function getAllInterviewers(state){
+  return Object.values(state.interviewers);
+}
 
 
-export { getAppointmentsForDay, getInterviewersForDay, getInterview };
+export { getAppointmentsForDay, getInterviewersForDay, getInterview, getAllInterviewers};
