@@ -11,17 +11,18 @@ import Error from "components/Appointment/Error";
 import { getInterview } from "helpers/selectors";
 // import { cancelInterview, bookInterview } from "Application";
 
+const EMPTY = "EMPTY";
+const SHOW = "SHOW";
+const CREATE = "CREATE";
+const SAVING = "SAVING";
+const DELETING = "DELETING";
+const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
 
-  const EMPTY = "EMPTY";
-  const SHOW = "SHOW";
-  const CREATE = "CREATE";
-  const SAVING = "SAVING";
-  const CONFIRM = "CONFIRM";
-  const EDIT = "EDIT";
-  const ERROR_SAVE = "ERROR_SAVE";
-  const ERROR_DELETE = "ERROR_DELETE";
 
   const initialMode = props.interview ? SHOW : EMPTY;
   const { mode, transition, back } = useVisualMode(initialMode)
@@ -35,7 +36,7 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    transition(SAVING,);
+    transition(SAVING);
 
     console.log("PROPS.BOOKINTERVIEW,", props.bookInterview(props.id, interview));
 
@@ -46,23 +47,22 @@ export default function Appointment(props) {
   }
 
 
-  function destroy(interviewToDelete) {
-    transition(DELETING, true);
-    props
-      .cancelInterview(interviewToDelete)
-      .then(() => transition(EMPTY))
-      .catch(err => transition(ERROR_DELETE, true));
-  }
+  // function destroy(interviewToDelete) {
+  //   transition(DELETING, true);
+  //   props
+  //     .cancelInterview(interviewToDelete)
+  //     .then(() => transition(EMPTY))
+  //     .catch(err => transition(ERROR_DELETE, true));
+  // }
 
-// Assignment says to use this code for "destroy", but it looks different from mine in that it throws "event" in as a param. Not sure how this might mess something up and I'm too tired to figure it out right now. Placing it here below for context in the morning light.
 
-// function destroy(event) {
-//   transition(DELETING, true);
-//   props
-//    .cancelInterview(props.id)
-//    .then(() => transition(EMPTY))
-//    .catch(error => transition(ERROR_DELETE, true));
-//  }
+function destroy(event) {
+  transition(DELETING, true);
+  props
+   .cancelInterview(props.id)
+   .then(() => transition(EMPTY))
+   .catch(error => transition(ERROR_DELETE, true));
+ }
 
 
   return (
@@ -122,8 +122,5 @@ export default function Appointment(props) {
       )}
     </article>
   )
-
-
-  // onLoad={() => setTimeout(transition(SHOW), 1000)} // this goes into SAVING mode if it's needed.
 
 }
