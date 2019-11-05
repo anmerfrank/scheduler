@@ -43,22 +43,6 @@ export default function useApplicationData() {
 
   const setDay = day => setState(prev => ({ ...prev, day }));
 
-  // console.log("INTERVIEWERS:", interviewers, "APPOINTMENTS:", appointments)
-  // const schedule = appointments.map((appointment) => {
-  //   const interview = getInterview(state, appointment.interview);
-  //   console.log(appointment)
-  //   return (
-  //     <Appointment
-  //       key={appointment.id}
-  //       id={appointment.id}
-  //       time={appointment.time}
-  //       interview={interview}
-  //       bookInterview={bookInterview}
-  //     />
-  //   );
-  // });
-//  console.log("Application.js - Appointment logging as follows:", appointments)
-
 
   // BOOK INTERVIEW 
 
@@ -78,8 +62,6 @@ export default function useApplicationData() {
       ...state,
       appointments
     };
-    // console.log("bookInterview returned id:", id, " and interview: ", interview)
-
 
     setState(newState);
 
@@ -110,9 +92,7 @@ export default function useApplicationData() {
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`, { interview })
     .then(res => {
-      console.log("Logging for CANCEL INTERVIEW: Res:", res);
-      console.log(res.data);
-    });
+  });
 
 
   }
