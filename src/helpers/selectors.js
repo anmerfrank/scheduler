@@ -22,9 +22,8 @@ function getInterview(state, interview) {
     return null;
   } else {
     const student = interview.student;
-    console.log('student', student)
+    // console.log('student', student)
     if (typeof(interview.interviewer) === "number") {
-      // FML ugly hack here... only try and expand this if it was passed in as a number, not an object
       const interviewer = state.interviewers[interview.interviewer];
 
       return { student, interviewer };

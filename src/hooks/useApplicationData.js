@@ -15,9 +15,6 @@ import { getInterview } from "helpers/selectors";
 import { getAllInterviewers } from "helpers/selectors";
 import transition from "hooks/useVisualMode";
 
-/////// 
-
-/// CODE GIVEN to refactor using Reducer: -- NOTE that this is out of scope for the main function! Will have to be moved in at some point. 
 
 
 const SET_DAY = "SET_DAY";
@@ -42,87 +39,71 @@ function reducer(state, action) {
       }
 
     case SET_INTERVIEW: {
-      // need to fix this
-    break;
+      let appointments = state.appointments;
+      const appointment = {
+        id: action.id,
+        interview: action.interview ? action.interview : null
+      }
+      appointments[action.id] = appointment;
+      return {
+        ...state,
+        appointments: appointments
+      }
     }
-    
+
     case DECREMENT_SPOTS: {
-      console.log("DECREMENT SPOTS: Action:", action);
       let days = state.days.map((day) => {
-        if (day.name === action.payload.day){
+        if (day.name === action.payload.day) {
           console.log("Spots Remaining:", day.spots);
-          return { 
-            ...day, 
-            // spots: day.spots
+          return {
+            ...day,
+            spots: day.spots - 1
           }
-        } 
+        }
         return day;
-      }) 
-      return {...state, days }
+      })
+      return { ...state, days }
     }
-   
 
-    // case INCREMENT_SPOTS: {
 
-  
-    //   let days = state.days.map((day) => {
-    //     if (day.name === action.payload.day){
-    //       return { 
-    //         ...day, 
-    //         spots: day.spots + 1
-    //       }
-    //     } 
-    //     return day;
-    //   }) 
-    //   return {...state, days }
-    // }
+    case INCREMENT_SPOTS: {
 
-  default:
-    throw new Error(
-      `Tried to reduce with unsupported action type: ${action.type}`
-    );
+
+      let days = state.days.map((day) => {
+        if (day.name === action.payload.day) {
+          return {
+            ...day,
+            spots: day.spots + 1
+          }
+        }
+        return day;
+      })
+      return { ...state, days }
+    }
+
+    default:
+      throw new Error(
+        `Tried to reduce with unsupported action type: ${action.type}`
+      );
+  }
+
+
+
+  const appointment = {
+    ...state.appointments[action.id],
+    interview: { ...action.interview },
+  };
+
+  const appointments = {
+    ...state.appointments,
+    [action.id]: appointment
+  };
+
+  return { 
+    ...state, 
+    appointments
+  }
 }
-
-
-
-  
-const appointment = {
-  ...state.appointments[action.id],
-  interview: { ...action.interview },
-};
-//const days = getSpotsLeft() //
-
-const appointments = {
-  ...state.appointments,
-  [action.id]: appointment
-};
-return { ...state, appointments }
-}
-
-// Get spots left: 
-
-// function getSpotsLeft(state) {
-
-//   let appointments;
-//   for (let day of state.days) {
-//     if (state.day.name === day.name) {
-//       appointments = day.appointments;
-//       break;
-//     }
-//   }
-//   spotsLeft = state.day.spots;
-
-//   for (let appt of state.appointments) {
-//     if (appointments.includes(appt.id)) {
-//       if (appt.interview !== null) {
-//         spotsLeft -= 1;
-//       }
-//     }
-//   }
-//   return spotsLeft;
-// }
-
-
 
 
 
@@ -152,13 +133,12 @@ export default function useApplicationData() {
   // BOOK INTERVIEW 
 
   function bookInterview(id, interview) {
-    console.log("BookInterview: STATE:", state, "DAY:". day)
+    console.log("BookInterview: STATE:", state, "INTERVIEW OBJECT:", interview)
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then(() => {
         dispatch({ type: SET_INTERVIEW, id, interview });
-        dispatch({ type: DECREMENT_SPOTS, payload: { day: state.day }})
+        dispatch({ type: DECREMENT_SPOTS, payload: { day: state.day } })
       })
-      // .then(() => {getSpotsLeft(state)});
   }
 
 
@@ -169,9 +149,11 @@ export default function useApplicationData() {
     dispatch({ type: SET_INTERVIEW, id });
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`, { interview })
-      .then(res => {
-      });
-
+    .then(() => {
+      dispatch({ type: SET_INTERVIEW, id });
+      dispatch({ type: INCREMENT_SPOTS, payload: { day: state.day } })
+    })
+      
   }
 
   return {

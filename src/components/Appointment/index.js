@@ -1,4 +1,5 @@
 import "./styles.scss";
+import PropTypes from 'prop-types';
 import React, { useState } from "react";
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
@@ -38,21 +39,23 @@ export default function Appointment(props) {
     };
     transition(SAVING);
 
-    console.log("PROPS.BOOKINTERVIEW,", props.bookInterview(props.id, interview));
+    // console.log("PROPS.BOOKINTERVIEW,", props.bookInterview(props.id, interview));
 
     props
       .bookInterview(props.id, interview)
-      .then(() => transition(SHOW))
+      .then(() => {
+        console.log("After Book:", props)
+        transition(SHOW)})
       .catch(error => transition(ERROR_SAVE, true));
   }
 
-function destroy(event) {
-  transition(DELETING, true);
-  props
-   .cancelInterview(props.id)
-   .then(() => transition(EMPTY))
-   .catch(error => transition(ERROR_DELETE, true));
- }
+  function destroy(event) {
+    transition(DELETING, true);
+    props
+      .cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch(error => transition(ERROR_DELETE, true));
+  }
 
 
   return (
@@ -84,7 +87,7 @@ function destroy(event) {
         <Status message='Saving...' />
       )}
 
-{mode === DELETING && (
+      {mode === DELETING && (
         <Status message='Deleting...' />
       )}
 
