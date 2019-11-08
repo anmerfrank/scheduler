@@ -22,7 +22,6 @@ function getInterview(state, interview) {
     return null;
   } else {
     const student = interview.student;
-    // console.log('student', student)
     if (typeof(interview.interviewer) === "number") {
       const interviewer = state.interviewers[interview.interviewer];
 

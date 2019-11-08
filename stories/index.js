@@ -174,10 +174,5 @@ storiesOf("InterviewerListItem", module)
   ));
 
 
-  
-  // storiesOf("Form", module)
-  // .addParameters({
-  //   backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
-  // })
 
   

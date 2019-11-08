@@ -29,8 +29,6 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(initialMode)
 
 
-  // console.log('boof', props.interview, mode, JSON.stringify(props));
-
 
   function save(name, interviewer) {
     const interview = {
@@ -39,12 +37,10 @@ export default function Appointment(props) {
     };
     transition(SAVING);
 
-    // console.log("PROPS.BOOKINTERVIEW,", props.bookInterview(props.id, interview));
 
     props
       .bookInterview(props.id, interview)
       .then(() => {
-        console.log("After Book:", props)
         transition(SHOW)})
       .catch(error => transition(ERROR_SAVE, true));
   }

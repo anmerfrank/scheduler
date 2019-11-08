@@ -7,7 +7,7 @@ export default function useVisualMode(initial) {
   function transition(newMode, replace = false) { 
     setMode(newMode);
     if (replace) {
-      setHistory(history.slice(0, history.length - 1).concat(newMode)); // skip
+      setHistory(history.slice(0, history.length - 1).concat(newMode)); 
     } else {
       setHistory(history.concat(newMode));
     }

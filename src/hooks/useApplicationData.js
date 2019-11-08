@@ -54,7 +54,6 @@ function reducer(state, action) {
     case DECREMENT_SPOTS: {
       let days = state.days.map((day) => {
         if (day.name === action.payload.day) {
-          console.log("Spots Remaining:", day.spots);
           return {
             ...day,
             spots: day.spots - 1
@@ -87,25 +86,7 @@ function reducer(state, action) {
       );
   }
 
-
-
-  const appointment = {
-    ...state.appointments[action.id],
-    interview: { ...action.interview },
-  };
-
-  const appointments = {
-    ...state.appointments,
-    [action.id]: appointment
-  };
-
-  return { 
-    ...state, 
-    appointments
-  }
 }
-
-
 
 
 export default function useApplicationData() {
@@ -130,10 +111,10 @@ export default function useApplicationData() {
   const setDay = day => dispatch({ type: SET_DAY, day });
 
 
-  // BOOK INTERVIEW 
+
+  // Books an interview: 
 
   function bookInterview(id, interview) {
-    console.log("BookInterview: STATE:", state, "INTERVIEW OBJECT:", interview)
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then(() => {
         dispatch({ type: SET_INTERVIEW, id, interview });
@@ -142,6 +123,7 @@ export default function useApplicationData() {
   }
 
 
+// Cancels an interview:
 
   function cancelInterview(id, interview) {
 
@@ -149,11 +131,11 @@ export default function useApplicationData() {
     dispatch({ type: SET_INTERVIEW, id });
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`, { interview })
-    .then(() => {
-      dispatch({ type: SET_INTERVIEW, id });
-      dispatch({ type: INCREMENT_SPOTS, payload: { day: state.day } })
-    })
-      
+      .then(() => {
+        dispatch({ type: SET_INTERVIEW, id });
+        dispatch({ type: INCREMENT_SPOTS, payload: { day: state.day } })
+      })
+
   }
 
   return {

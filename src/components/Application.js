@@ -16,23 +16,6 @@ import { getAllInterviewers } from "helpers/selectors";
 import transition from "hooks/useVisualMode";
 import useApplicationData from "hooks/useApplicationData";
 
-// 
-
-
-  // const interviewList = interviewers.map(interviewer => {
-  //   return (<InterviewerListItem
-  //     id={interviewer.id}
-  //     {...interviewer}
-  //   />)
-  // })
-
-
-
-// ------------ DO NOT EDIT UNDER THIS LINE -- THIS WAS THE CODE GIVEN ------ 
-// All state-based stuff has been removed, and is now under useApplicationData in /hooks. 
-
-//  The only thing I've changed was "appointments" to appointmentsList on line 194.
-
 
 
 export default function Application(props) {
@@ -60,24 +43,6 @@ export default function Application(props) {
       );
     }
   );
-
-  // MAPPING OVER A MAP in both functions above and below! Need to fix this. I can figure this out.
-
-  // const appointmentsList = appointments.map(appointment => {
-
-    
-  //   console.log("Application.js - Appointment logging as follows:", appointment)
-  //   return (<Appointment
-  //     id={appointment.id}
-  //     key={appointment.id}
-  //     // {...appointment}
-  //     time={appointment.time}
-  //     interview={getInterview(state, appointment.interview)}
-  //     interviewers={interviewers}
-  //     bookInterview={bookInterview}
-  //     cancelInterview={cancelInterview}
-  //   />)
-  // })
 
  
   return (

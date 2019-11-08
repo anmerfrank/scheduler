@@ -5,8 +5,15 @@ import "components/InterviewerListItem.scss";
 import "components/InterviewerList.scss";
 import InterviewerListItem from "components/InterviewerListItem";
 import Appointment from "components/Appointment";
+import PropTypes from 'prop-types';
+ 
+InterviewerList.propTypes = {
+  value: PropTypes.number,
+  onChange: PropTypes.func.isRequired
+};
 
 export default function InterviewerList(props) {
+ 
   const interviewers = props.interviewers.map(interviewer => {
     return (
       <InterviewerListItem
